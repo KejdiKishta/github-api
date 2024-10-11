@@ -40,7 +40,7 @@ export default {
     }
 
     img {
-        width: 35%;
+        width: 25%;
     }
 
     #description {
