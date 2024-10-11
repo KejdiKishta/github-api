@@ -1,27 +1,20 @@
 <script>
+import axios from "axios";
+import { store } from "../store";
+
 export default {
     data() {
         return {
-            searchQuery: '',   
-            searchType: 'repositories',
-            results: []
+            store
         };
     },
     methods: {
-        // test
         searchGitHub() {
-            const url = `https://api.github.com/search/${this.searchType}?q=${this.searchQuery}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                this.results = data.items;
-                console.log(this.results);
-                
-                })
-                .catch(error => {
-                console.error('Errore nella richiesta:', error);
-                });
+            axios.get(`https://api.github.com/search/${this.store.searchType}?q=${this.store.searchQuery}`)
+            .then((response) => {
+                this.store.results = response.data.items;
+                console.log(this.store.results);
+            })
         }
     }
 };
@@ -35,10 +28,10 @@ export default {
         <!-- searchbar -->
         <div class="d-flex align-items-center">
             <!-- Input -->
-            <input v-model="searchQuery" class="form-control me-2" type="text" placeholder="Cerca su GitHub..." aria-label="Search"/>
+            <input v-model="this.store.searchQuery" class="form-control me-2" type="text" placeholder="Cerca su GitHub..." aria-label="Search"/>
             
             <!-- Select type of search -->
-            <select v-model="searchType" class="form-select me-2" aria-label="Search type">
+            <select v-model="this.store.searchType" class="form-select me-2" aria-label="Search type">
                 <option value="repositories">Repositories</option>
                 <option value="users">Users</option>
             </select>
